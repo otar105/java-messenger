@@ -21,7 +21,6 @@ public class Main {
         System.out.println("Welcome to messenger");
         User user = null;
         AuthenticationService authenticationService = new AuthenticationService();
-        ArrayList<User> users = new ArrayList<>();
         while(true) {
             System.out.println(">");
             String input = scanner.nextLine();
