@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Server {
 
 
-    private ArrayList<Socket> socketList = new ArrayList<>();
+    public static ArrayList<Socket> socketList = new ArrayList<>();
     private ServerSocket serverSocket;
     private int numberOfUsers;
 
@@ -18,7 +18,6 @@ public class Server {
         while (true) {
             Socket newUser = serverSocket.accept();
             socketList.add(newUser);
-
 
             new SendMessage(socketList.get(socketList.size() - 1), socketList).start();
         }
