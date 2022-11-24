@@ -3,13 +3,11 @@ public class Chat {
     private int ID;
     private String CreatorIDEmail;
     private String ChatName;
-    private String CreationDate;
 
-    public Chat(int ID, String creatorIDEmail, String chatName, String creationDate) {
+    public Chat(int ID, String creatorIDEmail, String chatName) {
         this.ID = ID;
         CreatorIDEmail = creatorIDEmail;
         ChatName = chatName;
-        CreationDate = creationDate;
     }
 
 
@@ -37,15 +35,6 @@ public class Chat {
     public void setChatName(String chatName) {
         ChatName = chatName;
     }
-
-    public String getCreationDate() {
-        return CreationDate;
-    }
-
-    public void setCreationDate(String creationDate) {
-        CreationDate = creationDate;
-    }
-
 
 
 }

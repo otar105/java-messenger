@@ -12,11 +12,10 @@ public class ChatDao implements DAO<Chat> {
     @Override
     public int create(Chat chat) throws SQLException {
         Connection con = Database.connect();
-        String sql = "insert into messenger.Chat(CreatorIDEmail, Chatname, CreationDate) values(?,?,?)";
+        String sql = "insert into messenger.Chat(CreatorIDEmail, Chatname) values(?,?)";
         PreparedStatement preparedStatement =  con.prepareStatement(sql);
         preparedStatement.setString(1,chat.getCreatorIDEmail());
         preparedStatement.setString(2,chat.getChatName());
-        preparedStatement.setString(3,chat.getCreationDate());
 
         int result = preparedStatement.executeUpdate();
         return result;
@@ -33,8 +32,7 @@ public class ChatDao implements DAO<Chat> {
             int ID = rs.getInt("ID");
             String chatName = rs.getString("Chatname");
             String creatorIDEmail = rs.getString("CreatorIDEmail");
-            String creationDate = rs.getString("CreationDate");
-            Chat chat = new Chat(ID, creatorIDEmail, chatName, creationDate);
+            Chat chat = new Chat(ID, creatorIDEmail, chatName);
             chats.add(chat);
         }
         return chats;

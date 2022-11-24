@@ -2,39 +2,38 @@ package main;
 
 import Service.AuthenticationService;
 import DB.User;
-import server.Server;
 import client.Client;
+import server.Server;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
-        //Server server = new Server(9999);
         Scanner scanner = new Scanner(System.in);
         String menu1 = "1 - login\n2 - register\n3 - menu";
-        String menu2 = "1 - online users\n2 - my chats\n3 - log out";
         System.out.println("Welcome to messenger");
         User user = null;
         AuthenticationService authenticationService = new AuthenticationService();
         System.out.println(menu1);
         while(true) {
+            System.out.println(">");
+            String input = scanner.nextLine();
             if (user == null) {
-                System.out.println(">");
-                String input = scanner.nextLine();
+                System.out.println(menu1);
                 if (input.equals("1")) {
                     System.out.println("email:");
                     String email = scanner.nextLine();
                     System.out.println("password:");
                     String password = scanner.nextLine();
                     User temp_user = authenticationService.logIn(email,password);
-                    if (authenticationService != null) {
+                    System.out.println(temp_user);
+                    if (temp_user != null) {
                         user = temp_user;
-                        new Client("127.0.0.1", 9999,user);
+                        System.out.println("successfully logged in");
+                        Client c = new Client("127.0.0.1",5000,user);
                     } else {
                         System.out.println("invalid information!");
                     }
@@ -46,12 +45,16 @@ public class Main {
                     String username = scanner.nextLine();
                     System.out.println("password:");
                     String password = scanner.nextLine();
-                    String registration_date = LocalDateTime.now().toString();
-                    User new_user = new User(email,username,password,registration_date);
+                    User new_user = new User(email,username,password,0);
                     authenticationService.register(new_user);
                     System.out.println("Successfully registered! you can now login!");
                 }
+                if (input.equals("3")){
+                    System.out.println(menu1);
+                }
             }
         }
+
+
     }
 }

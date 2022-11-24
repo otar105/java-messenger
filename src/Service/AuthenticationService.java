@@ -24,7 +24,7 @@ public class AuthenticationService {
     public User logIn(String email,String password) throws SQLException {
         User user = GetByEmail(email);
         if (user != null) {
-            if (user.getPasswordEncrypted().equals(password)) {
+            if (user.getPassword().equals(password)) {
                 return user;
             } else {
                 return null;

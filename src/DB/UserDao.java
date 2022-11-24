@@ -2,6 +2,7 @@ package DB;
 
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao implements DAO<User> {
@@ -9,12 +10,12 @@ public class UserDao implements DAO<User> {
     @Override
     public int create(User user) throws SQLException {
         Connection con = Database.connect();
-        String sql = "insert into users (email,username,password,registration_date) values(?,?,?,?)";
+        String sql = "insert into users (email,username,password,currentchatid) values(?,?,?,?)";
         PreparedStatement preparedStatement =  con.prepareStatement(sql);
         preparedStatement.setString(1,user.getEmail());
         preparedStatement.setString(2,user.getName());
-        preparedStatement.setString(3,user.getPasswordEncrypted());
-        preparedStatement.setString(4,user.getRegistrationDate());
+        preparedStatement.setString(3,user.getPassword());
+        preparedStatement.setInt(4,user.getCurrentchatid());
         int result = preparedStatement.executeUpdate();
         return result;
     }
@@ -23,15 +24,18 @@ public class UserDao implements DAO<User> {
     public List<User> get() throws SQLException {
         Connection con = Database.connect();
         List<User> users = null;
+        users = new ArrayList<User>();
         String sql = "select * from users;";
         PreparedStatement preparedStatement =  con.prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
         if (rs.next()) {
+            int ID = rs.getInt("ID");
             String email = rs.getString("email");
             String username = rs.getString("username");
             String password = rs.getString("password");
-            String registration_date = rs.getString("registration_date");
-            User user = new User(email,username,password,registration_date);
+            int currentchatid = rs.getInt("currentchatid");
+            User user = new User(email,username,password,currentchatid);
+            user.setID(ID);
             users.add(user);
         }
         return users;
@@ -40,12 +44,11 @@ public class UserDao implements DAO<User> {
     @Override
     public int edit(User user) throws SQLException {
         Connection con = Database.connect();
-        String sql = "update users set username = ?, password = ?, registration_date = ? where email = ?";
+        String sql = "update users set username = ?, password = ? where email = ?";
         PreparedStatement preparedStatement =  con.prepareStatement(sql);
         preparedStatement.setString(1,user.getName());
-        preparedStatement.setString(2,user.getPasswordEncrypted());
-        preparedStatement.setString(3,user.getRegistrationDate());
-        preparedStatement.setString(4,user.getEmail());
+        preparedStatement.setString(2,user.getPassword());
+        preparedStatement.setString(3,user.getEmail());
         int result = preparedStatement.executeUpdate();
         return result;
     }
@@ -69,11 +72,12 @@ public class UserDao implements DAO<User> {
         preparedStatement.setInt(1,chatId);
         ResultSet rs = preparedStatement.executeQuery();
         if (rs.next()) {
+            int ID = rs.getInt("ID");
             String email = rs.getString("email");
             String username = rs.getString("username");
             String password = rs.getString("password");
-            String registration_date = rs.getString("registration_date");
-            User user = new User(email,username,password,registration_date);
+            int currentchatid = rs.getInt("currentchatid");
+            User user = new User(email,username,password,currentchatid);
             users.add(user);
         }
         return users;
