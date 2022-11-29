@@ -33,7 +33,7 @@ public class Main {
                     if (temp_user != null) {
                         user = temp_user;
                         System.out.println("successfully logged in");
-                        Client c = new Client("127.0.0.1",5000,user);
+                        Client c = new Client("127.0.0.1",9999,user);
                     } else {
                         System.out.println("invalid information!");
                     }

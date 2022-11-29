@@ -28,7 +28,7 @@ public class UserDao implements DAO<User> {
         String sql = "select * from users;";
         PreparedStatement preparedStatement =  con.prepareStatement(sql);
         ResultSet rs = preparedStatement.executeQuery();
-        if (rs.next()) {
+        while (rs.next()) {
             int ID = rs.getInt("ID");
             String email = rs.getString("email");
             String username = rs.getString("username");

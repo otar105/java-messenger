@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Server {
-    public static ArrayList<Socket> clients = new ArrayList<>();
-    public static HashMap<Socket, User> SocketUserList;
+
     public static void main(String[] args) {
-        try (ServerSocket serversocket = new ServerSocket(5000)) {
+        ArrayList<Socket> clients = new ArrayList<>();
+        HashMap<Socket, User> SocketUserList = new HashMap<Socket, User>();
+        try (ServerSocket serversocket = new ServerSocket(9999)) {
             System.out.println("Server is started...");
             while (true) {
                 Socket socket = serversocket.accept();

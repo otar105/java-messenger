@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ThreadServer extends Thread {
 
@@ -25,20 +26,31 @@ public class ThreadServer extends Thread {
     public void run() {
         try {
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
             while (true) {
                 String outputString = input.readLine();
-                String[] messageString = outputString.split(",");
+                System.out.println("info:");
+                System.out.println(outputString);
+                if (outputString.equals("1")) {
+                    PrintWriter printWriter;
+                    for (Map.Entry<Socket, User> entry : socketClientList.entrySet()) {
+                        Socket key = entry.getKey();
+                        User value = entry.getValue();
+                        System.out.println(value.getID() + " " + value.getEmail());
+                    }
+                    printWriter = new PrintWriter(socket.getOutputStream(), true);
+                    printWriter.println(outputString);
+                }
+                String[] messageString = outputString.split(":",5);
                 User currentUser = new User(messageString[1],messageString[2],messageString[3],Integer.parseInt(messageString[4]));
-                currentUser.setID(Integer.parseInt(messageString[0]));
                 System.out.println(currentUser.getEmail());
+                currentUser.setID(Integer.parseInt(messageString[0]));
                 if (!socketClientList.containsKey(socket)) {
                     socketClientList.put(socket, currentUser);
                     System.out.println(outputString);
-                    showMessageToAllClients(socket, outputString,currentUser);
+                    showMessageToAllClients(socket, "otariiiii",currentUser);
                 } else {
                     System.out.println(outputString);
-                    showMessageToAllClients(socket, outputString,currentUser);
+                    showMessageToAllClients(socket, "otairiiiidf",currentUser);
                 }
             }
         } catch (SocketException e) {
