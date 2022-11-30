@@ -1,0 +1,34 @@
+USE mziuri;
+select * from users;
+SET SQL_SAFE_UPDATES = 0;
+delete from users where email = "elbakidze.otari105@gmail.com";
+CREATE TABLE mziuri.Users(
+ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+EMAIL VARCHAR(30),
+Username VARCHAR(30),
+Password VARCHAR(30),
+Currentchatid INT);
+
+CREATE TABLE mziuri.Chat(
+ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+CreatorIDEmail VARCHAR(30),
+Chatname VARCHAR(30)
+);
+CREATE TABLE mziuri.Message(
+ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+MessageText LONGTEXT,
+UserIDEmail VARCHAR(30),
+ChatID INT,
+SendDate DATETIME
+);
+CREATE TABLE mziuri.UserChatIsMemberOf(
+ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+nickName VARCHAR(30),
+UserIDEmail VARCHAR(30),
+ChatID INT
+);
+CREATE TABLE mziuri.UserChatIsAdmin(
+ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+UserIDEmail VARCHAR(30),
+ChatID INT
+);
