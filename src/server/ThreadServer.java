@@ -28,49 +28,83 @@ public class ThreadServer extends Thread {
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while (true) {
                 String outputString = input.readLine();
-                System.out.println("info:");
-                System.out.println(outputString);
-                if (outputString.equals("1")) {
-                    PrintWriter printWriter;
-                    for (Map.Entry<Socket, User> entry : socketClientList.entrySet()) {
-                        Socket key = entry.getKey();
-                        User value = entry.getValue();
-                        System.out.println(value.getID() + " " + value.getEmail());
-                    }
-                    printWriter = new PrintWriter(socket.getOutputStream(), true);
-                    printWriter.println(outputString);
-                }
-                String[] messageString = outputString.split(":",5);
-                User currentUser = new User(messageString[1],messageString[2],messageString[3],Integer.parseInt(messageString[4]));
-                System.out.println(currentUser.getEmail());
-                currentUser.setID(Integer.parseInt(messageString[0]));
-                if (!socketClientList.containsKey(socket)) {
-                    socketClientList.put(socket, currentUser);
-                    System.out.println(outputString);
-                    showMessageToAllClients(socket, "otariiiii",currentUser);
-                } else {
-                    System.out.println(outputString);
-                    showMessageToAllClients(socket, "otairiiiidf",currentUser);
+                String[] tmessageString = outputString.split(":",5);
+                switch (tmessageString[1]) {
+                    case "1": // show all online users
+                        StringBuilder sb = new StringBuilder();
+                        socketClientList.forEach((socket,user) -> {
+                            sb.append(user.getEmail()).append(" | ");
+                        });
+                        PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+                        printWriter.println(sb.toString());
+                        break;
+                    case "2":
+                        if (socketClientList.containsKey(socket)) {
+                            String[] messageString = outputString.split(":",5);
+                            String[] userStringElements = messageString[0].split(",");
+                            User currentUser = new User(userStringElements[1],userStringElements[2],userStringElements[3],Integer.parseInt(userStringElements[4]));
+                            socketClientList.get(socket).setCurrentchatid(currentUser.getCurrentchatid());
+                            PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
+                        } else{
+                        String[] messageString = outputString.split(":",5);
+                        String[] userStringElements = messageString[0].split(",");
+                        User currentUser = new User(userStringElements[1],userStringElements[2],userStringElements[3],Integer.parseInt(userStringElements[4]));
+                        socketClientList.get(socket).setCurrentchatid(currentUser.getCurrentchatid());
+                        PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
+                        }
+                        break;
+                    case "3":
+                        if (socketClientList.containsKey(socket)) {
+                            String[] messageString = outputString.split(":",5);
+                            String[] userStringElements = messageString[0].split(",");
+                            User currentUser = new User(userStringElements[1],userStringElements[2],userStringElements[3],Integer.parseInt(userStringElements[4]));
+                            socketClientList.get(socket).setCurrentchatid(currentUser.getCurrentchatid());
+                            socketClientList.get(socket).getCurrentchatid();
+                        }
+                        else{
+                            String[] messageString = outputString.split(":",5);
+                            String[] userStringElements = messageString[0].split(",");
+                            User currentUser = new User(userStringElements[1],userStringElements[2],userStringElements[3],Integer.parseInt(userStringElements[4]));
+                            socketClientList.get(socket).setCurrentchatid(currentUser.getCurrentchatid());
+                            socketClientList.get(socket).getCurrentchatid();
+                            PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
+                            printWriter2.println("created");
+                        }
+                        break;
+                    case "4":
+                        break;
+                    default:
+                        if (socketClientList.containsKey(socket)) {
+                            showMessageToAllClients(socketClientList.get(this.socket),outputString);
+                        } else {
+                            String[] messageString2 = outputString.split(":",5);
+                            String[] userStringElements2 = messageString2[0].split(",");
+                            User currentUser2 = new User(userStringElements2[1],userStringElements2[2],userStringElements2[3],Integer.parseInt(userStringElements2[4]));
+                            currentUser2.setID(Integer.parseInt(userStringElements2[0]));
+                            socketClientList.put(socket, currentUser2);
+                            showMessageToAllClients(currentUser2," Arrived!");
+                        }
+                        break;
                 }
             }
         } catch (SocketException e) {
             String printMessage = socketClientList.get(socket) + " left the Server";
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            e.getStackTrace();
         }
     }
 
-    private void showMessageToAllClients(Socket sender, String outputString, User senderUser) {
-        Socket socket;
+    private void showMessageToAllClients(User user,String message) {
+        Socket socketuser;
         PrintWriter printWriter;
         int i = 0;
         while (i < clients.size()) {
-            socket = clients.get(i);
+            socketuser = clients.get(i);
             i++;
             try {
-                if (socket != sender && socketClientList.get(socket).getCurrentchatid() == senderUser.getCurrentchatid()) {
-                    printWriter = new PrintWriter(socket.getOutputStream(), true);
-                    printWriter.println(outputString);
+                if (socketuser != this.socket && socketClientList.get(socketuser).getCurrentchatid() == user.getCurrentchatid()) {
+                    printWriter = new PrintWriter(socketuser.getOutputStream(), true);
+                    printWriter.println(user.getName() + message);
                 }
             } catch (IOException ex) {
                 System.out.println(ex);

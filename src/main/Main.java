@@ -17,19 +17,17 @@ public class Main {
         System.out.println("Welcome to messenger");
         User user = null;
         AuthenticationService authenticationService = new AuthenticationService();
-        System.out.println(menu1);
         while(true) {
+            System.out.println(menu1);
             System.out.println(">");
             String input = scanner.nextLine();
             if (user == null) {
-                System.out.println(menu1);
                 if (input.equals("1")) {
                     System.out.println("email:");
                     String email = scanner.nextLine();
                     System.out.println("password:");
                     String password = scanner.nextLine();
                     User temp_user = authenticationService.logIn(email,password);
-                    System.out.println(temp_user);
                     if (temp_user != null) {
                         user = temp_user;
                         System.out.println("successfully logged in");

@@ -1,13 +1,14 @@
 package DB;
 public class Chat {
     private int ID;
-    private String CreatorIDEmail;
-    private String ChatName;
+    private String CreatorName;
+    private String Message;
+    private int ChatID;
 
-    public Chat(int ID, String creatorIDEmail, String chatName) {
-        this.ID = ID;
-        CreatorIDEmail = creatorIDEmail;
-        ChatName = chatName;
+    public Chat(String creatorIDEmail, String Message,int chatID) {
+        this.CreatorName = creatorIDEmail;
+        this.Message = Message;
+        this.ChatID = chatID;
     }
 
 
@@ -20,21 +21,27 @@ public class Chat {
         this.ID = ID;
     }
 
-    public String getCreatorIDEmail() {
-        return CreatorIDEmail;
+    public String getCreatorName() {
+        return CreatorName;
     }
 
-    public void setCreatorIDEmail(String creatorIDEmail) {
-        CreatorIDEmail = creatorIDEmail;
+    public void setCreatorName(String creatorIDEmail) {
+        CreatorName = creatorIDEmail;
     }
 
-    public String getChatName() {
-        return ChatName;
+    public int getChatID() {
+        return ChatID;
     }
 
-    public void setChatName(String chatName) {
-        ChatName = chatName;
+    public void setChatID(int chatName) {
+        ChatID = chatName;
     }
 
+    public String getMessage() {
+        return Message;
+    }
 
+    public void setMessage(String message) {
+        Message = message;
+    }
 }
